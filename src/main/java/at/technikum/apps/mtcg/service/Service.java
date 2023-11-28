@@ -1,11 +1,12 @@
 package at.technikum.apps.mtcg.service;
 import at.technikum.apps.mtcg.repository.Repository;
-import at.technikum.apps.mtcg.entity;
+//import at.technikum.apps.mtcg.entity;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class Service {
+    /*
     private final Repository repository;
 
     public Service() {
@@ -31,5 +32,6 @@ public abstract class Service {
     public Task delete(Task task) {
         return null;
     }
+    */
 
 }

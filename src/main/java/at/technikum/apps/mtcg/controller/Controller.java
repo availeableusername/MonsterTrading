@@ -18,11 +18,20 @@ public abstract class Controller {
         Response response = new Response();
         response.setStatus(httpStatus);
         response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody("{ \"error\": \"" + httpStatus.getMessage() + "\"}");
+        return response;
+    }
+
+     /*
+    protected Response status(HttpStatus httpStatus) {
+        Response response = new Response();
+        response.setStatus(httpStatus);
+        response.setContentType(HttpContentType.APPLICATION_JSON);
         response.setBody("{ \"error\": \""+ httpStatus.getMessage() + "\"}");
 
         return response;
 
-        /*
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         Task task = null;
@@ -50,7 +59,7 @@ public abstract class Controller {
         response.setBody(taskJson);
 
         return response;
-        */
+
     }
 
     //zuerst die methode für jeden Controller erstellen, dann abstrakte klasse probieren
@@ -78,6 +87,6 @@ public abstract class Controller {
 
     }
 
-
+*/
 
 }

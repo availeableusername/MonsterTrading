@@ -49,6 +49,7 @@ public class HttpMapper {
     // THOUGHT: Maybe some better place for this logic?
     private static HttpMethod getHttpMethod(String httpRequest) {
         String httpMethod = httpRequest.split(" ")[0];
+        System.out.println((httpMethod));
 
         // THOUGHT: Use constants instead of hardcoded strings
         return switch (httpMethod) {

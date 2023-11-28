@@ -1,13 +1,12 @@
 package at.technikum.apps.mtcg.entity;
 
-public class Package {
-
+public class User {
     private int id;
     private String name;
     private String description;
     private boolean done;
 
-    public Package() {
+    public User() {
     }
 
     public int getId() {
@@ -41,7 +40,4 @@ public class Package {
     public void setDone(boolean done) {
         this.done = done;
     }
-
-
-
 }
