@@ -33,6 +33,7 @@ public class HttpMapper {
         }
         //erstellt einen substring, wo nur body enthalte ist. Länge des Requests - contentLength = länge des Bodys
         request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
+        System.out.println(request.getBody());
 
         return request;
     }

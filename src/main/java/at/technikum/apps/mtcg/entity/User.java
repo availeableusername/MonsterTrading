@@ -1,19 +1,27 @@
 package at.technikum.apps.mtcg.entity;
 
-public class User {
-    private int id;
+public class User extends Entity {
+    private String id;
     private String name;
     private String description;
     private boolean done;
 
-    public User() {
+    public User(){
+
     }
 
-    public int getId() {
+    public User(String id, String name) { //String description, boolean done
+        this.id = id;
+        this.name = name;
+        //this.description = description;
+        //this.done = done;
+    }
+
+    public String getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -2,11 +2,13 @@ package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.repository.UserRepository;
+import at.technikum.apps.mtcg.repository.UserRepositoryMemory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserService {
+    //private final UserRepositoryMemory userRepository = new UserRepositoryMemory();
     private final UserRepository userRepository = new UserRepository();
 
     public UserService() {

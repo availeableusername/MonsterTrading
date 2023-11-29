@@ -30,6 +30,7 @@ public class UserController extends Controller {
         if (request.getRoute().equals("/users")) {
             switch (request.getMethod()) {
                 case "GET":
+                    System.out.println("in Get");
                     return this.readAll(request);
                 case "POST":
                     return this.create(request);
@@ -60,12 +61,12 @@ public class UserController extends Controller {
         */
     }
     public Response readAll(Request request) {
-        List<User> tasks = this.userService.findAll();
+        List<User> user = this.userService.findAll();
         ObjectMapper objectMapper = new ObjectMapper();
         String usersJson = null;
 
         try {
-            usersJson = objectMapper.writeValueAsString(tasks);
+            usersJson = objectMapper.writeValueAsString(user);
         } catch (JsonProcessingException var6) {
             throw new RuntimeException(var6);
         }
@@ -74,6 +75,7 @@ public class UserController extends Controller {
         response.setStatus(HttpStatus.OK);
         response.setContentType(HttpContentType.APPLICATION_JSON);
         response.setBody(usersJson);
+        System.out.println(response.getBody());
         return response;
     }
 
@@ -82,11 +84,15 @@ public class UserController extends Controller {
         User user = null;
 
         try {
-            user = (User)objectMapper.readValue(request.getBody(), User.class);
-        } catch (JsonProcessingException var7) {
-            throw new RuntimeException(var7);
+            user = objectMapper.readValue(request.getBody(), User.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-
+        //###############################
+        //System.out.println(request.getBody());
+        System.out.println(user.getId());
+        System.out.println(user.getName());
+        //###############################
         user = this.userService.save(user);
         String taskJson = null;
 
