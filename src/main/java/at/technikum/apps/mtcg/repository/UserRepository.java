@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class UserRepository{
     private final String FIND_ALL_SQL = "SELECT * FROM users";
-    private final String SAVE_SQL = "INSERT INTO users(id, name) VALUES(?, ?)";
+    private final String SAVE_SQL = "INSERT INTO users(id, name, password) VALUES(?, ?, ?)";
 
     private final Database database = new Database();
 
@@ -50,13 +50,14 @@ public class UserRepository{
 
     //@Override
     public User save(User user) {
+        //logik einbauen um zu checken, ob es den User schon gibt
         try (
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(SAVE_SQL)
         ) {
             pstmt.setString(1, user.getId());
             pstmt.setString(2, user.getName());
-            //pstmt.setString(3, user.getDescription());
+            pstmt.setString(3, user.getPassword());
             //pstmt.setBoolean(4, user.isDone());
             System.out.println("in db save");
             pstmt.execute();

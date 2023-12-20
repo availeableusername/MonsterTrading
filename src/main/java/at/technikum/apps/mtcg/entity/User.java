@@ -1,17 +1,18 @@
 package at.technikum.apps.mtcg.entity;
 
 public class User extends Entity {
+
+    //alles außer Konstruktor löschen?
     private String id;
     private String name;
-    private String description;
-    private boolean done;
+    private String password;
 
     public User(){
 
     }
 
-    public User(String id, String name) { //String description, boolean done
-        this.id = id;
+    public User(String name, String password) { //String description, boolean done
+        this.password = password;
         this.name = name;
         //this.description = description;
         //this.done = done;
@@ -32,20 +33,5 @@ public class User extends Entity {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isDone() {
-        return this.done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
+    public String getPassword(){return this.password;}
 }

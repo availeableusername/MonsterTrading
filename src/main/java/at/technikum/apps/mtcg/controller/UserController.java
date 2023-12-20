@@ -8,6 +8,7 @@ import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.UUID;
 
 import java.util.List;
 
@@ -88,6 +89,9 @@ public class UserController extends Controller {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        UUID uuid = UUID.randomUUID();
+        String userId = uuid.toString();
+        user.setId(userId);
         //###############################
         //System.out.println(request.getBody());
         System.out.println(user.getId());

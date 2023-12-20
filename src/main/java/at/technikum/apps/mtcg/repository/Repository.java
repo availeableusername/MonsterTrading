@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface Repository {
 
-    List<User> findAll();
+    List<Entity> findAll();
 
     Optional<Entity> find(int id);
 

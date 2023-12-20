@@ -1,19 +1,22 @@
 package at.technikum.apps.mtcg.entity;
 
 public abstract class Entity {
-    private String id;
+    //von private auf protected 30.11
+    protected String id;
 
-    private String name;
+    protected String name;
 
-    private String description;
+    protected String description;
 
-    private boolean done;
+    protected String password;
+
+    protected boolean done;
 
     public Entity() {
     }
 
     public Entity(String id, String name, String description, boolean done) {
-        this.id = id;
+        this.id = id; //id muss noch automatisch generiert werden
         this.name = name;
         this.description = description;
         this.done = done;
