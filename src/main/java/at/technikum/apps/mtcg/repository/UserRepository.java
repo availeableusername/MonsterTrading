@@ -94,6 +94,7 @@ public class UserRepository{
                 System.out.println(user.getUsername());
                 if(Objects.equals(user.getUsername(), dbName)){
                     System.out.println("User already in DB");
+                    user.setExists();
                     return false;
                 }
                 else{

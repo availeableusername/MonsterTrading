@@ -11,6 +11,8 @@ public class User { //extends Entity
     @JsonSetter("Password")
     private String Password;
 
+    private boolean exists = false;
+
     public User(){
 
     }
@@ -39,5 +41,12 @@ public class User { //extends Entity
     }
     public String getPassword(){return this.Password;}
     public void setPassword(String password){this.Password = password;}
+
+    public void setExists(){
+        exists = true;
+    }
+    public boolean getExists(){
+        return exists;
+    }
 }
 

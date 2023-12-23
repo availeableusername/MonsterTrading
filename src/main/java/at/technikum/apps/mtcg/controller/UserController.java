@@ -25,7 +25,7 @@ public class UserController extends Controller {
     }
 
     @Override
-    public Response handle(Request request) {
+    public Response handle(Request request) throws JsonProcessingException {
         //wenn noch ein / vorhanden ist (users/1) dann wird user mit id 1 gelöscht, geupdatet oder zurückgegeben
         //wenn kein / vorhanden ist /users, dann wird entweder ein neuer erstellt oder alle User werden zurückgegeben
         if (request.getRoute().equals("/users")) {
@@ -80,7 +80,7 @@ public class UserController extends Controller {
         return response;
     }
 
-    public Response create(Request request) {
+    public Response create(Request request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         User user = null;
         //System.out.println("In create");
@@ -105,6 +105,19 @@ public class UserController extends Controller {
             taskJson = objectMapper.writeValueAsString(user);
         } catch (JsonProcessingException var6) {
             throw new RuntimeException(var6);
+        }
+        if(!user.getExists()){
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK);
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(taskJson);
+        }
+        else {
+            String msg = objectMapper.writeValueAsString("User already exists");
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(msg);
         }
 
         Response response = new Response();
