@@ -83,6 +83,7 @@ public class UserController extends Controller {
     public Response create(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
         User user = null;
+        //System.out.println("In create");
 
         try {
             user = objectMapper.readValue(request.getBody(), User.class);
@@ -94,8 +95,8 @@ public class UserController extends Controller {
         user.setId(userId);
         //###############################
         //System.out.println(request.getBody());
-        System.out.println(user.getId());
-        System.out.println(user.getName());
+        //System.out.println(user.getId());
+        //System.out.println(user.getUsername());
         //###############################
         user = this.userService.save(user);
         String taskJson = null;

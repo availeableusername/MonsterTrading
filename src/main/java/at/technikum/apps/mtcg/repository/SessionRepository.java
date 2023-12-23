@@ -25,14 +25,14 @@ public class SessionRepository {
                 PreparedStatement pstmt = con.prepareStatement(FIND_USER_SQL)
         )
         {
-                pstmt.setString(1, user.getName());
+                pstmt.setString(1, user.getUsername());
                 pstmt.setString(2, user.getPassword());
                 //ResultSet rs = pstmt.executeQuery();
             try(ResultSet rs = pstmt.executeQuery()) {
                 String dbName = rs.getString("name");
                 String dbPwd = rs.getString("password");
                 System.out.println("in CheckUserLogin");
-                if(user.getName() == dbName && user.getPassword() == dbPwd){
+                if(user.getUsername() == dbName && user.getPassword() == dbPwd){
                     return true;
                 }
                 else{

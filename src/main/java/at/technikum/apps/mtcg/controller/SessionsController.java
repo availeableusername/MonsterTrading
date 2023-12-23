@@ -60,7 +60,7 @@ public class SessionsController extends Controller {
             throw new RuntimeException(e);
         }
         if(this.sessionService.CheckUserLogin(user)){
-            String token = user.getName() + "-mtcgToken";
+            String token = user.getUsername() + "-mtcgToken";
             //response logic
             Response response = new Response();
             response.setStatus(HttpStatus.OK);

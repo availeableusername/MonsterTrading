@@ -2,7 +2,7 @@ package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.mtcg.entity.Package;
 import at.technikum.apps.mtcg.service.PackageService;
-import at.technikum.apps.mtcg.service.TransactionService;
+//import at.technikum.apps.mtcg.service.TransactionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class PackageRepository {
         return Optional.empty();
     }
     public Package save(Package cardPackage){
-        cardPackage.setId(this.packages.size() + 1);
-        this.packages.add(cardPackage);
+        //cardPackage.setId(this.packages.size() + 1);
+        //this.packages.add(cardPackage);
         return cardPackage;
     }
 

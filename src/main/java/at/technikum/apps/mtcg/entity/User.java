@@ -1,19 +1,23 @@
 package at.technikum.apps.mtcg.entity;
 
-public class User extends Entity {
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+public class User { //extends Entity
 
     //alles außer Konstruktor löschen?
     private String id;
-    private String name;
-    private String password;
+    @JsonSetter("Username")
+    private String Username;
+    @JsonSetter("Password")
+    private String Password;
 
     public User(){
 
     }
 
-    public User(String name, String password) { //String description, boolean done
-        this.password = password;
-        this.name = name;
+    public User(String Username, String Password) { //String description, boolean done
+        this.Password = Password;
+        this.Username = Username;
         //this.description = description;
         //this.done = done;
     }
@@ -26,12 +30,14 @@ public class User extends Entity {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.Username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.Username = name;
     }
-    public String getPassword(){return this.password;}
+    public String getPassword(){return this.Password;}
+    public void setPassword(String password){this.Password = password;}
 }
+
