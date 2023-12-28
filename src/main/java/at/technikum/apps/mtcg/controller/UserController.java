@@ -25,7 +25,7 @@ public class UserController extends Controller {
     }
 
     @Override
-    public Response handle(Request request) throws JsonProcessingException {
+    public Response handle(Request request){
         //wenn noch ein / vorhanden ist (users/1) dann wird user mit id 1 gelöscht, geupdatet oder zurückgegeben
         //wenn kein / vorhanden ist /users, dann wird entweder ein neuer erstellt oder alle User werden zurückgegeben
         if (request.getRoute().equals("/users")) {
@@ -80,7 +80,7 @@ public class UserController extends Controller {
         return response;
     }
 
-    public Response create(Request request) throws JsonProcessingException {
+    public Response create(Request request){
         ObjectMapper objectMapper = new ObjectMapper();
         User user = null;
         //System.out.println("In create");
@@ -111,13 +111,21 @@ public class UserController extends Controller {
             response.setStatus(HttpStatus.OK);
             response.setContentType(HttpContentType.APPLICATION_JSON);
             response.setBody(taskJson);
+            //System.out.println("User does not exist");
         }
         else {
-            String msg = objectMapper.writeValueAsString("User already exists");
-            Response response = new Response();
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setContentType(HttpContentType.APPLICATION_JSON);
-            response.setBody(msg);
+            try{
+                String msg = objectMapper.writeValueAsString("User already exists");
+                Response response = new Response();
+                response.setStatus(HttpStatus.BAD_REQUEST);
+                response.setContentType(HttpContentType.APPLICATION_JSON);
+                response.setBody(msg);
+                //System.out.println("User exists");
+                return response;
+            } catch (JsonProcessingException var6) {
+                throw new RuntimeException(var6);
+            }
+
         }
 
         Response response = new Response();

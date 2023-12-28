@@ -12,7 +12,7 @@ public abstract class Controller {
 
     public abstract boolean supports(String route);
 
-    public abstract Response handle(Request request) throws JsonProcessingException;
+    public abstract Response handle(Request request);
 
     protected Response status(HttpStatus httpStatus) {
         Response response = new Response();
