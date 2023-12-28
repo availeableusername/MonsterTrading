@@ -17,6 +17,10 @@ public class SessionsController extends Controller {
 
     private final SessionService sessionService = new SessionService();
 
+    public SessionsController(){
+
+    }
+
 
     @Override
     public boolean supports(String route) {
@@ -61,7 +65,6 @@ public class SessionsController extends Controller {
         }
         if(this.sessionService.CheckUserLogin(user)){
             String token = user.getUsername() + "-mtcgToken";
-            //response logic
             Response response = new Response();
             response.setStatus(HttpStatus.OK);
             response.setContentType(HttpContentType.APPLICATION_JSON);
@@ -70,12 +73,16 @@ public class SessionsController extends Controller {
             return response;
         }
         else{
+            String msg = "Username or Password wrong";
+            Response response = new Response();
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(msg); //response.setBody(usersJson);
+            System.out.println(response.getBody());
+            return response;
             //response logic
         }
 
-
-
-        return null;
     }
 
 }

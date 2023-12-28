@@ -9,7 +9,6 @@ public class SessionService {
     private final SessionRepository sessionRepository = new SessionRepository();
 
     public boolean CheckUserLogin(User user){
-        sessionRepository.CheckUserLogin(user);
-        return true;
+        return sessionRepository.CheckUserLogin(user);
     }
 }
