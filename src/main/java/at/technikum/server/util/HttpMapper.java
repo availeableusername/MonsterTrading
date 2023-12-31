@@ -17,6 +17,7 @@ public class HttpMapper {
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
+        request.setToken(getHttpHeader("Authorization", httpRequest));
 
         // THOUGHT: don't do the content parsing in this method
         //checks if content length > 0 -> es gibt einen body

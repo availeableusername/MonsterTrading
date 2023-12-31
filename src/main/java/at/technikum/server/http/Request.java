@@ -18,6 +18,8 @@ public class Request {
 
     // none, "{ "name": "foo" }"
     private String body;
+    //token neu
+    private String token;
 
     public String getMethod() {
         return method;
@@ -66,4 +68,12 @@ public class Request {
     public void setBody(String body) {
         this.body = body;
     }
+    //token neu
+    public String getToken(){
+        return this.token;
+    }
+    public void setToken(String token){
+        this.token = token;
+    }
 }
+
