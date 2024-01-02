@@ -38,4 +38,20 @@ public class Response {
     public void setBody(String body) {
         this.body = body;
     }
+    public Response getResponse(String msg, int err){
+        Response response = new Response();
+        switch (err) {
+            case 200:
+                response.setStatus(HttpStatus.OK);
+                break;
+            case 400:
+                response.setStatus((HttpStatus.BAD_REQUEST));
+                break;
+            case 401:
+                response.setStatus((HttpStatus.UNAUTHORIZED));
+        }
+        response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody(msg);
+        return response;
+    }
 }

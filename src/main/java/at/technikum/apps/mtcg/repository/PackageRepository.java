@@ -44,7 +44,7 @@ public class PackageRepository {
 
             } catch (SQLException e) {
                 System.out.println(e);
-                System.exit(400);
+
                 // THOUGHT: how do i handle exceptions (hint: look at the TaskApp)
             }
 

@@ -1,5 +1,8 @@
 package at.technikum.server.http;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Request {
 
     // GET, POST, PUT, DELETE
@@ -74,6 +77,20 @@ public class Request {
     }
     public void setToken(String token){
         this.token = token;
+    }
+
+    public String getUsername(Request request){
+        Pattern pattern = Pattern.compile("Bearer\\s(\\w+)-mtcgToken");
+        Matcher matcher = pattern.matcher(request.getToken());
+        String username;
+
+        if (matcher.find()) {
+            username = matcher.group(1);
+            return username;
+        } else {
+            System.out.println("Matcher Problem");
+            return null;
+        }
     }
 }
 

@@ -9,6 +9,13 @@ public class Card {
 
     public Card(){
     }
+    public Card(String name, int damage, String type, String category, String id){
+        this.name = name;
+        this.damage = damage;
+        this.type = type;
+        this.category = category;
+        this.id = id;
+    }
     @JsonSetter("Id")
     private String id;
     @JsonSetter("Name")
