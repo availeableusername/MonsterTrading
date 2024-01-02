@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class UserRepository{
     private final String FIND_ALL_SQL = "SELECT * FROM users";
-    private final String SAVE_SQL = "INSERT INTO users(id, name, password) VALUES(?, ?, ?)";
+    private final String SAVE_SQL = "INSERT INTO users(id, name, password, gold) VALUES(?, ?, ?, ?)";
 
     private final String CHECK_FOR_EXISTING_USERS = "SELECT * FROM users where name=?";
 
@@ -65,10 +65,12 @@ public class UserRepository{
             pstmt.setString(1, user.getId());
             pstmt.setString(2, user.getUsername());
             pstmt.setString(3, user.getPassword());
+            pstmt.setInt(4, 4);
             //pstmt.setBoolean(4, user.isDone());
             //System.out.println("in db save");
             pstmt.execute();
         } catch (SQLException e) {
+            System.out.println(e);
             // THOUGHT: how do i handle exceptions (hint: look at the TaskApp)
         }
 

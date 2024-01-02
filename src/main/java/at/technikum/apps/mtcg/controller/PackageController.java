@@ -2,6 +2,7 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.mtcg.service.PackageService;
+import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -32,8 +33,17 @@ public class PackageController extends Controller{
     }
     public Response create(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
+        Response response = new Response();
         Card card = null;
         String jsonString = request.getBody();
+
+        if(!request.getToken().equals("Bearer admin-mtcgToken")){
+            String msg = "Only admin is allowed to create packages";
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(msg);
+            return response;
+        }
 
         List<Card> cards = null;
         try {
@@ -68,7 +78,10 @@ public class PackageController extends Controller{
 
 
         // System.out.println(request.getBody());
-        Response response = new Response();
+        String msg = "Package successfully created";
+        response.setStatus(HttpStatus.OK);
+        response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody(msg);
         response = this.packageService.PackagesToDB(cards, request);
 
 

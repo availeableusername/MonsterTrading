@@ -11,10 +11,12 @@ public class User { //extends Entity
     @JsonSetter("Password")
     private String Password;
 
+    private int gold;
+
     private boolean exists = false;
 
     public User(){
-
+        this.gold = 4;
     }
 
     public User(String Username, String Password) { //String description, boolean done

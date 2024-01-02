@@ -16,6 +16,7 @@ public class PackageService {
 
     public Response PackagesToDB(List<Card> cards, Request request){
         Response response = new Response();
+        //in controller verlegen
         if(request.getToken().equals(allowedToken)){
             packageRepository.SavePackage(cards);
             String msg = "Package successfully created";
