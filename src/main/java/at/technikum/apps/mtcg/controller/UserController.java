@@ -8,6 +8,8 @@ import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Objects;
 import java.util.UUID;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class UserController extends Controller {
     }
     @Override
     public boolean supports(String route) {
-        return route.equals("/users");
+        return route.startsWith("/users");
     }
 
     @Override
@@ -31,7 +33,6 @@ public class UserController extends Controller {
         if (request.getRoute().equals("/users")) {
             switch (request.getMethod()) {
                 case "GET":
-                    System.out.println("in Get");
                     return this.readAll(request);
                 case "POST":
                     return this.create(request);
@@ -40,26 +41,18 @@ public class UserController extends Controller {
             return this.status(HttpStatus.BAD_REQUEST);
         } else {
             String[] routeParts = request.getRoute().split("/");
-            int taskId = Integer.parseInt(routeParts[2]);
+            String username  = (routeParts[2]);
             switch (request.getMethod()) {
                 case "GET":
-                    return this.read(taskId, request);
+                    return this.read(username, request);
                 case "PUT":
-                    return this.update(taskId, request);
+                    return this.update(username, request);
                 case "DELETE":
-                    return this.delete(taskId, request);
+                    return null;
             }
 
             return this.status(HttpStatus.BAD_REQUEST);
         }
-        /*
-        Response response = new Response();
-        response.setStatus(HttpStatus.OK);
-        response.setContentType(HttpContentType.TEXT_PLAIN);
-        response.setBody("user controller");
-
-        return response;
-        */
     }
     public Response readAll(Request request) {
         List<User> user = this.userService.findAll();
@@ -76,7 +69,7 @@ public class UserController extends Controller {
         response.setStatus(HttpStatus.OK);
         response.setContentType(HttpContentType.APPLICATION_JSON);
         response.setBody(usersJson);
-        System.out.println(response.getBody());
+        //System.out.println(response.getBody());
         return response;
     }
 
@@ -134,12 +127,20 @@ public class UserController extends Controller {
         response.setBody(taskJson);
         return response;
     }
-    public Response read(int id, Request request) {
-        return null;
+    public Response read(String username, Request request) {
+        Response response = new Response();
+        if(!Objects.equals(request.getUsername(), username)){
+            return response.getResponse("You can't access this users information.", 400);
+        }
+        return this.userService.showUserData(request, response);
     }
 
-    public Response update(int id, Request request) {
-        return null;
+    public Response update(String username, Request request) {
+        Response response = new Response();
+        if(!Objects.equals(request.getUsername(), username)){
+            return response.getResponse("You can't update this users information.", 400);
+        }
+        return userService.updateUserData(request, response);
     }
 
     public Response delete(int id, Request request) {

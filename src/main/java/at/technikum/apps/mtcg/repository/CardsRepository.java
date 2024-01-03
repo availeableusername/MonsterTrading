@@ -23,7 +23,7 @@ public class CardsRepository {
 
     public Response showCards(Request request){
         Response response = new Response();
-        String username = request.getUsername(request);
+        String username = request.getUsername();
         List<Card> cards = new ArrayList<>();
         try(
                 Connection con = database.getConnection();

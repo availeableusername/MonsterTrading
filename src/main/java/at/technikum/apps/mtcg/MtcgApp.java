@@ -30,6 +30,7 @@ public class MtcgApp implements ServerApplication {
             if (!controller.supports(request.getRoute())) {
                 continue;
             }
+            //System.out.println("Found route " + request.getRoute());
             return controller.handle(request);
         }
 

@@ -79,9 +79,9 @@ public class Request {
         this.token = token;
     }
 
-    public String getUsername(Request request){
+    public String getUsername(){
         Pattern pattern = Pattern.compile("Bearer\\s(\\w+)-mtcgToken");
-        Matcher matcher = pattern.matcher(request.getToken());
+        Matcher matcher = pattern.matcher(getToken());
         String username;
 
         if (matcher.find()) {

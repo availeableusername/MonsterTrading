@@ -3,6 +3,8 @@ package at.technikum.apps.mtcg.service;
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.repository.UserRepositoryMemory;
+import at.technikum.server.http.Request;
+import at.technikum.server.http.Response;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +28,11 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public User update(int updateId, User updatedTask) {
-        return null;
+    public Response showUserData(Request request, Response response){
+        return this.userRepository.showUserData(request, response);
+    }
+    public Response updateUserData(Request request, Response response) {
+        return userRepository.updateUserData(request, response);
     }
 
     public User delete(User task) {
