@@ -33,7 +33,7 @@ public class CardsRepository {
             ResultSet rs = pstmt.executeQuery();
             if(!rs.next()){ //
                 System.out.println("No cards acquired");
-                return response.getResponse("No cards acquired", 200);
+                return response.getResponse("No cards acquired.", 400);
             } else {
                 do {
                     Card card = new Card(

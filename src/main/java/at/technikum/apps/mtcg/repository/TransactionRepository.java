@@ -39,7 +39,7 @@ public class TransactionRepository {
             //System.out.println(username);
         } else {
             System.out.println("Matcher Problem");
-            return null;
+            return response.getError();
         }
 
         if(request.getToken().isEmpty()){
@@ -68,10 +68,7 @@ public class TransactionRepository {
             if(!rs.next()){ //
                 System.out.println("No packages left");
                 restoreGold(username);
-                String msg = "No packages left";
-                response.setStatus(HttpStatus.OK);
-                response.setContentType(HttpContentType.APPLICATION_JSON);
-                response.setBody(msg);
+                return response.getResponse("No packages left", 200);
             } else {
                do {
                     String id = rs.getString("id");

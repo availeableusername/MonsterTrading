@@ -7,7 +7,9 @@ public enum HttpStatus {
 
     BAD_REQUEST(400, "Bad Request"),
 
-    UNAUTHORIZED(401, "Unauthorized");
+    UNAUTHORIZED(401, "Unauthorized"),
+
+    SERVER_ERROR(500, "Internal Server Error");
 
     private final int code;
     private final String message;

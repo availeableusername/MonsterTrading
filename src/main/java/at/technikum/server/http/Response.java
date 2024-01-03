@@ -54,4 +54,12 @@ public class Response {
         response.setBody(msg);
         return response;
     }
+
+    public Response getError(){
+        Response response = new Response();
+        response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody("Sorry, something went wrong on our side.");
+        response.setStatus((HttpStatus.SERVER_ERROR));
+        return response;
+    }
 }

@@ -20,6 +20,7 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new PackageController());
         controllers.add(new TransactionController());
         controllers.add(new CardsController());
+        controllers.add(new DeckController());
     }
 
     @Override

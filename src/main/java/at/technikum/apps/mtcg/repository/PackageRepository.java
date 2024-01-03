@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PackageRepository {
 
     private final Database database = new Database();
-    private final String SAVE_CARDS_SQL = "Insert into cards values(?,?,?,?,?,?)";
+    private final String SAVE_CARDS_SQL = "Insert into cards(id, name, damage, type, category, taken, deck) values(?,?,?,?,?,?,?)";
     //db bereits angelegt, rows id, name, damage, type, category, taken (which user owns this card)
 
     public void SavePackage(List<Card> cards){
@@ -39,12 +39,12 @@ public class PackageRepository {
                 pstmt.setString(4, card.getType());
                 pstmt.setString(5, card.getCategory());
                 pstmt.setString(6, "free");
+                pstmt.setString(7, "no");
                 i++;
                 pstmt.execute();
 
             } catch (SQLException e) {
                 System.out.println(e);
-
                 // THOUGHT: how do i handle exceptions (hint: look at the TaskApp)
             }
 
