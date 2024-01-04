@@ -83,7 +83,7 @@ public class DeckRepository {
         if(response.getStatusCode() != 200){
             return response;
         }
-        System.out.println(response.getStatusCode() + " " + response.getBody());
+        //System.out.println(response.getStatusCode() + " " + response.getBody());
 
         String DELETE_DECK = "Update cards set deck='no' where taken=?";
         String CREATE_DECK = "Update cards set deck='yes' where taken=? and id in (" + String.join(",",  "?, ".repeat(ids.size()).split(", ")) + ")";
