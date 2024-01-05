@@ -125,15 +125,28 @@ public class BattleRepository {
         String path = "C:\\Users\\Anwender\\OneDrive\\Informatik_Studium\\3. Semester\\SWEN1\\MonsterTrading\\battles\\" + map.get("id") + ".txt";
         int i = 0;
 
-        while(i < 10) {
+        while(i < 11) {
+            StringBuilder history = new StringBuilder();
             Random random = new Random();
+            String user1 = map.get("player1");
+            String user2 = map.get("player2");
+            String winner = null;
+
+            if(deck1.isEmpty()){
+                writer("Match ended: " + user1 + " has no cards left.", path);
+                System.out.println("deck1 empty");
+                break;
+            } else if (deck2.isEmpty()) {
+                writer("Match ended: " + user2 + " has no cards left.", path);
+                System.out.println("deck2 empty");
+                break;
+            }
+
+            System.out.println("kienboec deck: " + deck1.size());
+            System.out.println("altenhof deck: " + deck2.size());
+
             int c1 = random.nextInt(deck1.size());
             int c2 = random.nextInt(deck2.size());
-            //System.out.println(deck1.get(0));
-            //System.out.println(deck1.get(1));
-            //System.out.println(deck1.get(2));
-            //System.out.println(deck1.get(3));
-            //System.out.println(c2);
             HashMap<String, String> card1 = deck1.get(c1);
             HashMap<String, String> card2 = deck2.get(c2);
 
@@ -145,92 +158,91 @@ public class BattleRepository {
             String name1 = card1.get("name");
             String name2 = card2.get("name");
 
-            StringBuilder history = new StringBuilder();
-
             history.append(map.get("player1")).append(": ").append(name1).append(" (").append(card1.get("damage")).append(") vs ");
             history.append(map.get("player2")).append(": ").append(name2).append(" (").append(card2.get("damage")).append(") => ");
-            //history += map.get("player2") + ": " + card2.get("name") + " (" + card2.get("damage") +") => ";
 
-            if (monsterFight) {
-                history.append(battleResult(damage1, damage2, name1, name2));
-
-            } else {
-                if (type1.equals(type2)) {
-                    history.append(battleResult(damage1, damage2, name1, name2));
-                    //history += battleResult(damage1, damage2, name1, name2);
-
-                    //in Funktion auslagern?
-                } else if (type1.equals("Fire") && type2.equals("Water")) {
+            if (!monsterFight) {
+                if (type1.equals("Fire") && type2.equals("Water")) {
                     damage1 = damage1 / 2;
                     damage2 = damage2 * 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
 
                 } else if(type1.equals("Fire") && type2.equals("Regular")){
                     damage1 = damage1 * 2;
                     damage2 = damage2 / 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
                     
                 } else if (type1.equals("Water") && type2.equals("Regular")) {
                     damage1 = damage1 / 2;
                     damage2 = damage2 * 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
                     
                 } else if (type1.equals("Water") && type2.equals("Fire")) {
                     damage1 = damage1 * 2;
                     damage2 = damage2 / 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
                     
                 } else if (type1.equals("Regular") && type2.equals("Fire")) {
                     damage1 = damage1 / 2;
                     damage2 = damage2 * 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
                     
                 } else if (type1.equals("Regular") && type2.equals("Water")) {
                     damage1 = damage1 * 2;
                     damage2 = damage2 / 2;
-                    history.append(damage1).append(" VS ").append(damage2);
-                    history.append(battleResult(damage1, damage2, name1, name2));
 
                 }
+                history.append(damage1).append(" VS ").append(damage2).append("->");
+                winner = (battleResult(damage1, damage2, map.get("player1"), map.get("player2")));
+
+                if(winner.equals(map.get("player1"))){
+                    history.append(name1).append(" defeats ").append(name2);
+                    deck1.add(card2);
+                    deck2.remove(c2);
+                } else if (winner.equals(map.get("player2"))) {
+                    history.append(name2).append(" defeats ").append(name1);
+                    deck2.add(card1);
+                    deck1.remove(c1);
+                } else {
+                    history.append("Draw!");
+                }
+
                 history.append(" \n");
+
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-                    // Text in die Datei schreiben
                     writer.write(history.toString());
 
-                    //System.out.println("Text wurde erfolgreich in die Datei geschrieben.");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
             i++;
         }
-        //stats updaten hinzufügen?
+
         String winner;
         if (this.p1 > this.p2){
             winner = "The winner is: " + map.get("player1");
         } else if (this.p1 < this.p2) {
             winner = "The winner is: " + map.get("player2");
         } else{
-            winner = "It's a Draw";
+            winner = "It's a Draw!";
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+        winner += " Rounds played: " + --i;
+        writer(winner, path);
+        /*try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
             writer.write(winner);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         resultsToDB(map);
-
         String history = history(path);
 
-        //System.out.println(battleReportString);
         return response.getResponse(history, 200);
+    }
+
+    public void writer(String history, String path){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+            writer.write(history);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String history(String path){
@@ -253,17 +265,17 @@ public class BattleRepository {
         return null;
     }
 
-    public String battleResult(float damage1, float damage2, String name1, String name2){
-        String history;
+    public String battleResult(float damage1, float damage2, String user1, String user2){
+        String winner;
         if (damage1 > damage2) {
             this.p1++;
-            return history = " " + name1 + " defeats " + name2;
+            return winner = user1;
             //cards change deck logic
         } else if (damage1 < damage2) {
             this.p2++;
-            return history = " " + name2 + " defeats " + name1;
+            return winner = user2;
         } else {
-            return history = "Draw!";
+            return winner = "Draw";
         }
     }
 
