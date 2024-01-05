@@ -13,7 +13,7 @@ public class BattleService {
 
         if(response.getBody().equals("Waiting")){
             //System.out.println("Waiting");
-            battleRepository.waitingForBattle(request, response);
+            return battleRepository.waitingForBattle(request, response);
         }
         return response;
     }

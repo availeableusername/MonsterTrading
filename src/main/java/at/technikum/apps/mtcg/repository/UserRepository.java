@@ -27,6 +27,7 @@ public class UserRepository{
     private final String SHOW_USERDATA = "SELECT * FROM userdata where username=?";
 
     private final String UPDATE_USERDATA = "Update userdata set name=?, bio=?, image=? where username=?";
+    private final String CREATE_USER_STATS = "Insert into stats(username, win, defeat, draw, games) values(?,0,0,0,0)";
 
     private final Database database = new Database();
 
@@ -66,13 +67,19 @@ public class UserRepository{
         }
         try (
                 Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(SAVE_SQL)
+                PreparedStatement pstmt = con.prepareStatement(SAVE_SQL);
+                PreparedStatement pstmt2 = con.prepareStatement(CREATE_USER_STATS)
         ) {
             pstmt.setString(1, user.getId());
             pstmt.setString(2, user.getUsername());
             pstmt.setString(3, user.getPassword());
             pstmt.setInt(4, 4);
             pstmt.execute();
+
+            if(!user.getUsername().equals("admin")) {
+                pstmt2.setString(1, user.getUsername());
+                pstmt2.execute();
+            }
         } catch (SQLException e) {
             System.out.println(e);
             return user;

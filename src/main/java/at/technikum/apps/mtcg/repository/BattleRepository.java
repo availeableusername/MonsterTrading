@@ -24,6 +24,11 @@ public class BattleRepository {
     private final String GET_DECK = "select * from cards where taken=? and deck='yes'";
     private final String PLAYER2 = "UPDATE battles set player2=? where id=?";
     private final String WINNER = "UPDATE battles set winner=? where id=?";
+    private final String STATS_WINNER = "UPDATE stats set win=win +1, games=games +1 where username=?";
+    private final String STATS_LOSER = "UPDATE stats set defeat=defeat +1, games=games + 1 where username=?";
+    private final String STATS_DRAW = "UPDATE stats set draw=draw+1, games=games+1 where username in (?, ?)";
+    private final String CHECK_BATTLE = "SELECT winner FROM battles where id=? and winner is not null";
+    private final String GET_ID = "SELECT id FROM battles where id = (Select max(id) from battles) and winner is null and player1=?";
     private final Database database = new Database();
 
     private int p1 = 0;
@@ -113,12 +118,6 @@ public class BattleRepository {
             //System.out.println(e);
             //return deckList;
         }
-        /*
-        System.out.println(deckList.get(0));
-        System.out.println(deckList.get(1));
-        System.out.println(deckList.get(2));
-        System.out.println(deckList.get(3));
-         */
 
         return deckList;
     }
@@ -212,8 +211,6 @@ public class BattleRepository {
             i++;
         }
         //stats updaten hinzufügen?
-        resultsToDB(map);
-
         String winner;
         if (this.p1 > this.p2){
             winner = "The winner is: " + map.get("player1");
@@ -228,6 +225,15 @@ public class BattleRepository {
             e.printStackTrace();
         }
 
+        resultsToDB(map);
+
+        String history = history(path);
+
+        //System.out.println(battleReportString);
+        return response.getResponse(history, 200);
+    }
+
+    public String history(String path){
         String battleReport = null;
         try {
             File doc = new File(path);
@@ -239,13 +245,12 @@ public class BattleRepository {
                 result.append(line).append(System.lineSeparator());
             }
             reader.close();
-            battleReport = result.toString();
+            return battleReport = result.toString();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //System.out.println(battleReportString);
-        return response.getResponse(battleReport, 200);
+        return null;
     }
 
     public String battleResult(float damage1, float damage2, String name1, String name2){
@@ -264,20 +269,43 @@ public class BattleRepository {
 
     public void resultsToDB(HashMap<String, String> map){
         String winner;
+        int result;
         if (this.p1 > this.p2){
             winner = map.get("player1");
+            result = 1;
         } else if (this.p1 < this.p2) {
             winner = map.get("player2");
+            result = 2;
         } else{
             winner = "Draw";
+            result = 3;
         }
         try(
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(WINNER);
+                PreparedStatement pstmt4 = con.prepareStatement(STATS_DRAW);
+                PreparedStatement pstmt2 = con.prepareStatement(STATS_WINNER);
+                PreparedStatement pstmt3 = con.prepareStatement(STATS_LOSER);
                 ){
             pstmt.setInt(2, Integer.parseInt(map.get("id")));
             pstmt.setString(1, winner);
             pstmt.executeUpdate();
+
+            if(result == 1){
+                pstmt2.setString(1, map.get("player1"));
+                pstmt3.setString(1, map.get("player2"));
+                pstmt2.executeUpdate();
+                pstmt3.executeUpdate();
+            } else if (result == 2) {
+                pstmt3.setString(1, map.get("player1"));
+                pstmt2.setString(1, map.get("player2"));
+                pstmt2.executeUpdate();
+                pstmt3.executeUpdate();
+            } else{
+                pstmt4.setString(1, map.get("player1"));
+                pstmt4.setString(2, map.get("player2"));
+                pstmt4.executeUpdate();
+            }
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -286,7 +314,30 @@ public class BattleRepository {
     }
 
     public Response waitingForBattle(Request request, Response response){
-        //checks if battle is finished, returns battle report
-        return response.getError();
+        int id = 0;
+        while(true){
+            try(
+                    Connection con = database.getConnection();
+                    PreparedStatement pstmt = con.prepareStatement(GET_ID);
+                    PreparedStatement pstmt2 = con.prepareStatement(CHECK_BATTLE);
+                    ){
+                pstmt.setString(1, request.getUsername());
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()){
+                    id = rs.getInt("id");
+                }
+                String path = "C:\\Users\\Anwender\\OneDrive\\Informatik_Studium\\3. Semester\\SWEN1\\MonsterTrading\\battles\\" + id + ".txt";
+                pstmt2.setInt(1, id);
+                rs = pstmt2.executeQuery();
+                while (rs.next()){
+                    return response.getResponse(history(path),200);
+                }
+
+            }catch (SQLException e){
+                e.printStackTrace();
+                return response.getError();
+            }
+        }
+        //return response.getError();
     }
 }
