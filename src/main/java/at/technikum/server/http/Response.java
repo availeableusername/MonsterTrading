@@ -1,5 +1,7 @@
 package at.technikum.server.http;
 
+import java.util.HashMap;
+
 public class Response {
 
     private int statusCode;
@@ -61,5 +63,21 @@ public class Response {
         response.setBody("Sorry, something went wrong on our side.");
         response.setStatus((HttpStatus.SERVER_ERROR));
         return response;
+    }
+
+    public String mapToString(HashMap<String, String> map) {
+        StringBuilder result = new StringBuilder();
+
+        map.forEach((key, value) -> result.append(key)
+                .append(": ")
+                .append(value)
+                .append(", "));
+
+        // Entferne das letzte ", " am Ende des Strings
+        if (result.length() > 0) {
+            result.setLength(result.length() - 2);
+        }
+
+        return result.toString();
     }
 }

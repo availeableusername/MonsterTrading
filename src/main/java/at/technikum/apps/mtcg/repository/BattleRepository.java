@@ -24,8 +24,8 @@ public class BattleRepository {
     private final String GET_DECK = "select * from cards where taken=? and deck='yes'";
     private final String PLAYER2 = "UPDATE battles set player2=? where id=?";
     private final String WINNER = "UPDATE battles set winner=? where id=?";
-    private final String STATS_WINNER = "UPDATE stats set win=win +1, games=games +1 where username=?";
-    private final String STATS_LOSER = "UPDATE stats set defeat=defeat +1, games=games + 1 where username=?";
+    private final String STATS_WINNER = "UPDATE stats set win=win +1, games=games +1, elo=elo+3 where username=?";
+    private final String STATS_LOSER = "UPDATE stats set defeat=defeat +1, games=games + 1, elo=elo-5 where username=?";
     private final String STATS_DRAW = "UPDATE stats set draw=draw+1, games=games+1 where username in (?, ?)";
     private final String CHECK_BATTLE = "SELECT winner FROM battles where id=? and winner is not null";
     private final String GET_ID = "SELECT id FROM battles where id = (Select max(id) from battles) and winner is null and player1=?";
@@ -142,8 +142,8 @@ public class BattleRepository {
                 break;
             }
 
-            System.out.println("kienboec deck: " + deck1.size());
-            System.out.println("altenhof deck: " + deck2.size());
+            //System.out.println("kienboec deck: " + deck1.size());
+            //System.out.println("altenhof deck: " + deck2.size());
 
             int c1 = random.nextInt(deck1.size());
             int c2 = random.nextInt(deck2.size());
@@ -215,6 +215,7 @@ public class BattleRepository {
         }
 
         String winner;
+        System.out.println("kienboec points: " + p1 + "\naltenhof points: " + p2);
         if (this.p1 > this.p2){
             winner = "The winner is: " + map.get("player1");
         } else if (this.p1 < this.p2) {

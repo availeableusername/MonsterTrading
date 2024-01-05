@@ -27,7 +27,7 @@ public class UserRepository{
     private final String SHOW_USERDATA = "SELECT * FROM userdata where username=?";
 
     private final String UPDATE_USERDATA = "Update userdata set name=?, bio=?, image=? where username=?";
-    private final String CREATE_USER_STATS = "Insert into stats(username, win, defeat, draw, games) values(?,0,0,0,0)";
+    private final String CREATE_USER_STATS = "Insert into stats(username, win, defeat, draw, games, elo) values(?,0,0,0,0,100)";
 
     private final Database database = new Database();
 

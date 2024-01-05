@@ -10,9 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class StatsRepository {
 
@@ -23,7 +21,7 @@ public class StatsRepository {
     private final Database database = new Database();
 
     public Response showUserStats(Request request, Response response){
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, String> hashMap = new LinkedHashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         String statsJson = null;
         try(
@@ -38,6 +36,7 @@ public class StatsRepository {
                 hashMap.put("Defeat", String.valueOf(rs.getInt("defeat")));
                 hashMap.put("Draw", String.valueOf(rs.getInt("draw")));
                 hashMap.put("Games", String.valueOf(rs.getInt("games")));
+                hashMap.put("Elo", String.valueOf(rs.getInt("elo")));
             }
         }
         catch(SQLException e){
@@ -45,11 +44,12 @@ public class StatsRepository {
             return response.getError();
         }
 
-        try {
+        /*try {
             statsJson = objectMapper.writeValueAsString(hashMap);
         } catch (JsonProcessingException var6) {
             throw new RuntimeException(var6);
-        }
+        }*/
+        statsJson = response.mapToString(hashMap);
         return response.getResponse(statsJson, 200);
     }
 
@@ -57,19 +57,24 @@ public class StatsRepository {
         List<HashMap<String, String>> hashList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         String statsJson = null;
+        String mapString = null;
         try(
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(GET_ALL_STATS)
         ) {
             ResultSet rs = pstmt.executeQuery();
+            mapString = "Scoreboard: \n";
             while (rs.next()) {
-                HashMap<String, String> hashMap = new HashMap<>();
+                HashMap<String, String> hashMap = new LinkedHashMap<>();
                 hashMap.put("Username", rs.getString("username"));
                 hashMap.put("Win", String.valueOf(rs.getInt("win")));
                 hashMap.put("Defeat", String.valueOf(rs.getInt("defeat")));
                 hashMap.put("Draw", String.valueOf(rs.getInt("draw")));
                 hashMap.put("Games", String.valueOf(rs.getInt("games")));
+                hashMap.put("Elo", String.valueOf(rs.getInt("elo")));
                 hashList.add(hashMap);
+                mapString += response.mapToString(hashMap);
+                mapString += "\n";
             }
 
         }
@@ -78,11 +83,6 @@ public class StatsRepository {
             return response.getError();
         }
 
-        try {
-            statsJson = objectMapper.writeValueAsString(hashList);
-        } catch (JsonProcessingException var6) {
-            throw new RuntimeException(var6);
-        }
-        return response.getResponse(statsJson, 200);
+        return response.getResponse(mapString, 200);
     }
 }
