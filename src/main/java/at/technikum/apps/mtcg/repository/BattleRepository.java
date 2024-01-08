@@ -29,6 +29,7 @@ public class BattleRepository {
     private final String STATS_DRAW = "UPDATE stats set draw=draw+1, games=games+1 where username in (?, ?)";
     private final String CHECK_BATTLE = "SELECT winner FROM battles where id=? and winner is not null";
     private final String GET_ID = "SELECT id FROM battles where id = (Select max(id) from battles) and winner is null and player1=?";
+    private final String SET_GOLD = "UPDATE users set gold=gold+1 where name=?";
     private final Database database = new Database();
 
     private int p1 = 0;
@@ -215,7 +216,7 @@ public class BattleRepository {
         }
 
         String winner;
-        System.out.println("kienboec points: " + p1 + "\naltenhof points: " + p2);
+        ///System.out.println("kienboec points: " + p1 + "\naltenhof points: " + p2);
         if (this.p1 > this.p2){
             winner = "The winner is: " + map.get("player1");
         } else if (this.p1 < this.p2) {
@@ -299,6 +300,7 @@ public class BattleRepository {
                 PreparedStatement pstmt4 = con.prepareStatement(STATS_DRAW);
                 PreparedStatement pstmt2 = con.prepareStatement(STATS_WINNER);
                 PreparedStatement pstmt3 = con.prepareStatement(STATS_LOSER);
+                PreparedStatement pstmt5 = con.prepareStatement(SET_GOLD);
                 ){
             pstmt.setInt(2, Integer.parseInt(map.get("id")));
             pstmt.setString(1, winner);
@@ -307,13 +309,17 @@ public class BattleRepository {
             if(result == 1){
                 pstmt2.setString(1, map.get("player1"));
                 pstmt3.setString(1, map.get("player2"));
+                pstmt5.setString(1, map.get("player1"));
                 pstmt2.executeUpdate();
                 pstmt3.executeUpdate();
+                pstmt5.executeUpdate();
             } else if (result == 2) {
                 pstmt3.setString(1, map.get("player1"));
                 pstmt2.setString(1, map.get("player2"));
+                pstmt5.setString(1, map.get("player2"));
                 pstmt2.executeUpdate();
                 pstmt3.executeUpdate();
+                pstmt5.executeUpdate();
             } else{
                 pstmt4.setString(1, map.get("player1"));
                 pstmt4.setString(2, map.get("player2"));
