@@ -7,13 +7,15 @@ import at.technikum.server.http.Response;
 public class BattleService {
     private final BattleRepository battleRepository = new BattleRepository();
 
+
     public Response battle(Request request, Response response){
         //checks if battle finished, if not calls func waitingForBattle
         response = battleRepository.battle(request, response);
 
         if(response.getBody().equals("Waiting")){
-            //System.out.println("Waiting");
+            //System.out.println("Waiting in Function");
             return battleRepository.waitingForBattle(request, response);
+
         }
         return response;
     }

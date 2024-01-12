@@ -36,7 +36,7 @@ public class BattleRepository {
 
     private int p2 = 0;
 
-    public Response battle(Request request, Response response){
+    public synchronized Response battle(Request request, Response response){
         //checks if battle in DB, if not inserts player1 into DB, if battle is found calls func battleDecks and insert player2 into DB
         HashMap<String, String> map = new HashMap<>();
         try (

@@ -86,11 +86,7 @@ public class UserController extends Controller {
         UUID uuid = UUID.randomUUID();
         String userId = uuid.toString();
         user.setId(userId);
-        //###############################
-        //System.out.println(request.getBody());
-        //System.out.println(user.getId());
-        //System.out.println(user.getUsername());
-        //###############################
+
         user = this.userService.save(user);
         String taskJson = null;
 
