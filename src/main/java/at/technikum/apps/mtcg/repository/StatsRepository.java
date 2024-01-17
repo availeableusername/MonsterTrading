@@ -16,7 +16,7 @@ public class StatsRepository {
 
     private final String GET_USER_STATS = "SELECT * FROM stats where username=?";
     //table stats
-    private final String GET_ALL_STATS = "SELECT * FROM stats order by elo";
+    private final String GET_ALL_STATS = "SELECT * FROM stats order by elo DESC";
 
     private final Database database = new Database();
 

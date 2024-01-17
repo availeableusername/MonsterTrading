@@ -147,7 +147,7 @@ public class TradingRepository {
                 categoryTrade = rs.getString("category");
                 damageTrade = rs.getInt("damage");
             }
-            return categoryTrade.equals(categoryCard) && damageCard >= damageTrade;
+            return categoryTrade.equalsIgnoreCase(categoryCard) && damageCard >= damageTrade;
         } catch (SQLException e){
             e.printStackTrace();
             //return response.getError();
